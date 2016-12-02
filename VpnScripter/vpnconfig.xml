@@ -1,0 +1,26 @@
+<!-- VpnScripter configuration file © 2016 Federico Di Marco
+
+Provider defines the vpn providers you have. Each vpn provider has usually a set of servers to which you
+can connect and the script creates a vpn connection for every server you specify for every provider listed.
+The created connection will have:
+- Name: Server attribute (till first .) + Provider name if proto is auto or empty, Server + Proto + Provider name if not null.        
+- Protocol: the one specified in the server element or if null the one specified in the provider element or if null auto
+- L2tp PSK, User, Password as those specified in the provider element (you don't have to repeat them for all servers)
+- Server hostname: Server attribute + Provider base domain if server attribute does not contain any "." chars
+                  otherwise server attribute
+-->
+
+<Providers>
+  <Provider name="TestVPN1" basedomain="myvpn.com" l2tppsk="" user="xxxxxxx" password="yyyyyy">   
+    <Server server="sw" />   <!--Vpn will have sw.myvpn.com as host address and SW TestVPN1 as name, automatic protocol-->
+    <Server server="ro" proto="PPTP"/>   <!--Server proto overrides Provider specified protocol (auto in this case)-->
+    <Server server="kick-vm.myvpnext.com" proto="SSTP"/>  <!--Vpn will have kick-vm.myvpnext.com as host address and KICK-VM TestVPN1 as name -->
+    <Server server="sp" proto="IKEV2"/> 
+</Provider>
+<Provider name="TestVPN2" basedomain="myvpn2.com" l2tppsk="zxcvn" user="wwwwwww" password="zzzzzz">
+	<Server server="karate" proto="L2TP" /> 
+	<Server server="kazu"  /> 
+	<Server server="moon"  /> 
+	<Server server="sun" /> 
+</Provider>
+</Providers>
