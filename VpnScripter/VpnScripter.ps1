@@ -38,12 +38,12 @@ $Source = @"
 		public static void Add(string path,string name,string server, string proto, string l2tppsk, string user, string password) {
 			RasPhoneBook PhoneBook=new RasPhoneBook();
 
-            PhoneBook.Open(path);
+			PhoneBook.Open(path);
 
-            RasEntry VpnEntry = RasEntry.CreateVpnEntry(name,server, ConvertProto(proto), RasDevice.Create(name, DotRas.RasDeviceType.Vpn), true);
-            VpnEntry.Options.UsePreSharedKey = true;
-            VpnEntry.Options.CacheCredentials = true;
-            VpnEntry.Options.ReconnectIfDropped = true;
+			RasEntry VpnEntry = RasEntry.CreateVpnEntry(name,server, ConvertProto(proto), RasDevice.Create(name, DotRas.RasDeviceType.Vpn), true);
+			VpnEntry.Options.UsePreSharedKey = true;
+			VpnEntry.Options.CacheCredentials = true;
+			VpnEntry.Options.ReconnectIfDropped = true;
 			if (VpnEntry.VpnStrategy==RasVpnStrategy.IkeV2Only) {
 				// 23 EAP-AKA
 				// 50 EAP-AKA'
@@ -57,20 +57,19 @@ $Source = @"
 			}
 			else { 
 				VpnEntry.Options.RequireMSChap2 = true;				
-            }
+			}
 
-            //VpnEntry.Options.RequireWin95MSChap = false; // seems to be ignored, chap is still checked in newly created vpn profile
-            //VpnEntry.Options.RequireMSChap = false;  // seems to be ignored, chap is still checked in newly created vpn profile
-            //VpnEntry.Options.RequireChap = false; // seems to be ignored, chap is still checked in newly created vpn profile
-            VpnEntry.EncryptionType = RasEncryptionType.RequireMax;
-            PhoneBook.Entries.Add(VpnEntry);
-            VpnEntry.UpdateCredentials(RasPreSharedKey.Client,l2tppsk);
-            VpnEntry.UpdateCredentials(new System.Net.NetworkCredential(user,password));
+			//VpnEntry.Options.RequireWin95MSChap = false; // seems to be ignored, chap is still checked in newly created vpn profile
+			//VpnEntry.Options.RequireMSChap = false;  // seems to be ignored, chap is still checked in newly created vpn profile
+			//VpnEntry.Options.RequireChap = false; // seems to be ignored, chap is still checked in newly created vpn profile
+			VpnEntry.EncryptionType = RasEncryptionType.RequireMax;
+			PhoneBook.Entries.Add(VpnEntry);
+			VpnEntry.UpdateCredentials(RasPreSharedKey.Client,l2tppsk);
+			VpnEntry.UpdateCredentials(new System.Net.NetworkCredential(user,password));
 		}		
 	}
 "@
 
-# Small 
 Add-Type -Path $psscriptroot\DotRas.dll
 Add-Type -ReferencedAssemblies $psscriptroot\DotRas.dll -TypeDefinition $Source -Language CSharp  
 
@@ -79,9 +78,6 @@ Write-Host "---------------------------------------------`n`n"
 
 
 $pbkfile="$env:APPDATA\Microsoft\Network\Connections\Pbk\rasphone.pbk"
-
-Get-Location
-#Set-Location $psscriptroot
 
 Write-Host "Dll location $psscriptroot\DotRas.dll"
 Write-Host "Configuration file $ConfigFile"
@@ -94,8 +90,6 @@ ForEach ($provider in $xmlconf.Providers.Provider) {
 	ForEach ($server in $($provider.Server)) {
 		Write-Debug "Debug: Server $($server.server)"
 		$temp=$server.server.Split('.')
-
-		#$temp| Get-Member
 
 		Write-Debug "Debug: Server $($server.server) Splitted $temp Count $($temp.Count)"
 		if ($temp.Count -eq 1) {
@@ -121,7 +115,7 @@ ForEach ($provider in $xmlconf.Providers.Provider) {
 
 		
 		# I tried first with standard powershell function Add-VpnConnection yet I was unable to find a way to pass credentials while creating the vpn
-		# I gave up after having tried everything and I switched to DotRas library. If someone know how to create them please let me know.
+		# I gave up after having tried everything and I switched to DotRas library. If someone know how to pass them please let me know.
 		#$a = New-EapConfiguration
 		#$a | Get-Member
 		#$a
