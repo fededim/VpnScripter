@@ -13,7 +13,9 @@
     <Copyright />
     <Description />
     <Guid>31429224-4c24-4519-9879-947207dac62d</Guid>
-    <DebugArguments>"c:\users\po\documents\visual studio 2015\Projects\VpnScripter\VpnScripter\serverconf.xml"</DebugArguments>
+    <DebugArguments>"C:\Users\Po\Documents\Visual Studio 2015\Projects\VpnScripter\VpnScripter\vpnconfig.xml"</DebugArguments>
+    <WorkingDirectory>
+    </WorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
